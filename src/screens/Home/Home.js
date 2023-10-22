@@ -130,7 +130,9 @@ export default ({ navigation }) => {
             New in Town
           </Text>
           <TouchableOpacity onPress={() => {
-            navigation.push(Screen.LISTING)
+            navigation.push(Screen.LISTING ,{
+              Caterars
+            })
           }} >
             <Text
               marginV-20
@@ -159,7 +161,9 @@ export default ({ navigation }) => {
             Best Rated
           </Text>
           <TouchableOpacity onPress={() => {
-            navigation.push(Screen.LISTING)
+            navigation.push(Screen.LISTING , {
+              Caterars
+            })
           }} >
             <Text
               marginV-20

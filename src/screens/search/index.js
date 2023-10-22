@@ -13,13 +13,36 @@ import { Entypo } from '@expo/vector-icons';
 import { ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { width } from '../../utils/DptpPixel';
-
+import firebase from '../../utils/firebase';
 const MAIN_IMAGE =
   'https://raw.githubusercontent.com/FaiezWaseem/food-recipe/master/src/assets/images/recipes/spagetti.png';
 
 export default function ({ navigation }) {
+  const [ Caterars , setCaterars ] = React.useState([])
+  const [temp, setTemp] = React.useState([])
+  const [search, setSearch] = React.useState('')
+
+  React.useEffect(()=>{
+    if(search.length > 2){
+      setCaterars(Restaurants.filter( item =>  {
+          if(item?.username.toLowerCase().includes(search.toLocaleLowerCase())){
+              return item
+          }
+      }))
+      // console.log(Restaurants.filter( item => item?.username.toLowerCase().includes(search.toLocaleLowerCase())))
+    }else{
+      setRestaurants(temp)
+    }
+  },[search])
+  React.useEffect(()=>{
+   firebase.on('user/caterar/' , (snap)=>{
+    const caterar = snap.val();
+    setCaterars( item => [ { ...caterar ,key  : snap.key} , ...item]);
+    setTemp( item => [ { ...caterar ,key  : snap.key} , ...item]);
+   })
+  },[])
   return (
-    <View padding-10 flex bg-textWhite>
+    <View padding-10 flex bg-textWhite marginT-30 >
       <View
         style={{
           backgroundColor: '#eee',
@@ -33,7 +56,8 @@ export default function ({ navigation }) {
         <EvilIcons name="search" size={24} color="black" />
         <TextField
           placeholder={'find catering service near you'}
-          onChangeText={(e) => console.log(e)}
+          value={search}
+          onChangeText={setSearch}
           style={{
             backgroundColor: '#eee',
             fontWeight: '600',
@@ -45,15 +69,7 @@ export default function ({ navigation }) {
         <Text textBlack>Nc,USA</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
+        {Caterars.map(item => <MenuItem />)}
       </ScrollView>
     </View>
   );

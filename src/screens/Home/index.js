@@ -8,7 +8,6 @@ import ProfileTab from './Profile'
 import OrderTab from './Orders'
 const Tab = createBottomTabNavigator();
 
-const Sample = () => <View></View>;
 
 export default function MainScreen({ navigation }) {
   return (

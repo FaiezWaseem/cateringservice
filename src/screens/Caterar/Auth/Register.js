@@ -70,8 +70,8 @@ export default ({ navigation }) => {
           width: '80%',
         }}>
         <TouchableOpacity onPress={pickFile} >
-          <View center padding-10 >
-            <Image source={{ uri: imageUri }} width={200} height={200} borderRadius={8} />
+          <View center  >
+            <Image source={{ uri: imageUri }} width={100} height={100} borderRadius={8} />
             <Text orange >Select Image</Text>
             <ProgressBar progress={uploadProgress} progressColor='orange' />
           </View>

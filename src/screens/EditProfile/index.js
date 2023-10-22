@@ -1,4 +1,4 @@
-import {
+ import {
     View,
     Text,
     Button,
@@ -7,24 +7,41 @@ import {
     TextField,
 } from 'react-native-ui-lib';
 import { width, height } from '../../utils/DptpPixel';
-import { MaterialIcons } from '@expo/vector-icons';
-export default () => {
+import React from 'react';
+import firebase from '../../utils/firebase';
+export default ({ route , navigation }) => {
+    const { user } = route.params;
+    const [username, setUsername] = React.useState(user?.username)
+    const [email, setEmail] = React.useState(user?.email)
+    const [phoneNumber, setPhoneNumber] = React.useState(user?.phone)
+    const [address  , setAddress] = React.useState(user?.address)
+    const onUpdatePress = () =>{
+        firebase.update(`user/${firebase.getUid()}`,{
+            username,
+            email,
+            phoneNumber,
+            address
+        })
+        alert('updated profile');
+        navigation.pop()
+
+    }
     return (
         <View marginT-30 flex bg-textWhite>
             <View height={height(30)} bg-orange center>
                 <View row>
                     <Avatar
                         source={{
-                            uri: 'https://faiezwaseem.tech/static/images/profile.png',
+                            uri: '',
                         }}
                         size={100}
                     />
                     <View center marginL-10 >
                         <Text textWhite style={{ fontFamily: 'Poppin-Bold' }}>
-                            Jhon Doe
+                            {user.username}
                         </Text>
                         <Text textWhite style={{ fontFamily: 'Poppin-Bold' }}>
-                            jhondoe@xyz.com
+                            {user.email}
                         </Text>
                         <Button
                             outline
@@ -38,41 +55,33 @@ export default () => {
                 placeholder={'Username'}
                 floatingPlaceholder
                 paddingH-10
-                onChangeText={() => { }}
-                enableErrors
-                validate={['required', 'email', (value) => value.length > 6]}
-                validationMessage={['Field is required', 'Email is invalid', 'Password is too short']}
+                value={username}
+                onChangeText={setUsername}
             />
             <TextField
                 placeholder={'Email'}
                 floatingPlaceholder
                 paddingH-10
-                onChangeText={() => { }}
-                enableErrors
-                validate={['required', 'email', (value) => value.length > 6]}
-                validationMessage={['Field is required', 'Email is invalid', 'Password is too short']}
+                onChangeText={setEmail}
+                value={email}
             />
             <TextField
                 placeholder={'Phone'}
                 floatingPlaceholder
                 paddingH-10
-                onChangeText={() => { }}
-                enableErrors
-                validate={['required', 'email', (value) => value.length > 6]}
-                validationMessage={['Field is required', 'Email is invalid', 'Password is too short']}
-            />
+                onChangeText={setPhoneNumber}
+                value={phoneNumber}
+             />
             <TextField
                 placeholder={'Address'}
                 floatingPlaceholder
                 paddingH-10
                 underlineColorAndroid={'grey'}
-                onChangeText={() => { }}
-                enableErrors
-                validate={['required', 'email', (value) => value.length > 6]}
-                validationMessage={['Field is required', 'Email is invalid', 'Password is too short']}
+                onChangeText={setAddress}
+                value={address}
             />
             <View center >
-                <Button size={'large'} label='Update' bg-orange />
+                <Button size={'large'} label='Update' bg-orange onPress={onUpdatePress} />
             </View>
 
 

@@ -25,11 +25,11 @@ export default () => {
         <Dialog
             visible={isDialogVisible}
             onDismiss={() => setDialogVisible(!isDialogVisible)}
-            panDirection={PanningProvider.Directions.DOWN}>
+            panDirection={PanningProvider.Directions.LEFT}>
             <View
                 padding-10
                 borderRadius={8}
-                height={height(90)}
+                height={height(100)}
                 backgroundColor={Colors.white}>
                 <Image
                     source={{

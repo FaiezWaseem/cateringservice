@@ -86,6 +86,16 @@ export default ({ navigation }) => {
         width={'100%'}
         onPress={() => { navigation.push(Screen.CATERAR_REGISTER) }}
       />
+      <Button
+        label={`User Login`}
+        red10
+        link
+        underline
+        size={Button.sizes.large}
+        marginT-20
+        width={'100%'}
+        onPress={() => { navigation.push(Screen.SIGNIN) }}
+      />
       <Toast
         visible={error.isError}
         position={'bottom'}

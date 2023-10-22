@@ -49,7 +49,9 @@ export default ({ navigation }) => {
       </View>
 
       <TouchableOpacity onPress={() => {
-        navigation.push(Screen.EDITPROFILE)
+        navigation.push(Screen.EDITPROFILE, {
+          user
+        })
       }} >
         <View padding-5>
           <View padding-10 row style={{ justifyContent: 'space-between' }}>

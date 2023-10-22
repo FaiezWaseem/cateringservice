@@ -4,8 +4,7 @@ import { getDatabase, ref, push, set, update, remove, onChildAdded  , onValue} f
 import { Alert } from 'react-native';
 import { apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId, measurementId } from '@env';
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 class Database {
   constructor() {
     const firebaseConfig = {
@@ -20,7 +19,7 @@ class Database {
     };
    this.app = initializeApp(firebaseConfig)
   //  const auth = initializeAuth(firebaseConfig, {
-  //   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+  //   persistence: getReactNativePersistence(AsyncStorage)
   // });
   }
 
@@ -37,14 +36,14 @@ class Database {
     onAuthStateChanged(getAuth(), callback);
   }
 
-  signIn(email, pass) {
+  signIn(email, pass , errorCallback) {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, pass)
       .then(() => {
         Alert.alert('Login', 'Login Successful');
       })
       .catch((error) => {
-        Alert.alert('Error', error.message);
+        errorCallback(error.message)
       });
   }
 
@@ -64,7 +63,7 @@ class Database {
   }
 
   fb(path) {
-    return getDatabase();
+    return getDatabase()
   }
 
   getKey() {

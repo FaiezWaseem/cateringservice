@@ -14,10 +14,15 @@ export default ({ navigation }) => {
   });
 
   const handlePress = () => {
- 
     if (username.length > 0 && password.length > 0) {
       setloading(true);
-      db.signIn(username , password)
+      db.signIn(username , password , (err)=>{
+        setError({
+          isError: true,
+          message: err,
+        });
+        setloading(false)
+      })
       return;
     }
     setError({
@@ -29,19 +34,7 @@ export default ({ navigation }) => {
 React.useEffect(()=>{
   db.isAuthenticated((user)=>{
     if(user){
-      AsyncStorage.getItem('isCaterar')
-      .then(res => {
-        console.log(res)
-        if(res === "true"){
-          navigation.replace(Screen.CATERAR_HOME)
-        }else{
-          navigation.replace(Screen.HOME)
-        }
-      })
-      .catch(err =>{
-        navigation.replace(Screen.HOME)
-       console.log(err)
-      })
+      navigation.replace(Screen.HOME)
     }
   })
 },[])

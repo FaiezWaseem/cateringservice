@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,28 +8,32 @@ import {
 } from 'react-native-ui-lib';
 import { FlatList } from 'react-native';
 import Screen from '../../utils/Screens';
-
+import firebase from '../../utils/firebase';
 export default ({ navigation }) => {
-  const [items, setItem] = React.useState([])
-  return <View flex marginT-30 onLayout={() => {
-    setItem([1, 2, 3, 4, 5, 6, 7, 8, 9, 0])
-  }} >
-    <Text marginL-10 text30 orange >History</Text>
+  const [items, setItem] = useState([])
+  useEffect(() => {
+    firebase.on(`history/${firebase.getUid()}`, (snap) => {
+      console.log(snap.val().status)
+      setItem(order => [snap.val(), ...order]);
+    })
+  }, [])
+  return <View flex marginT-30 bg-white  >
+    <Text marginL-10 marginV-10 text30 orange  >History</Text>
     <FlatList
       data={items}
-      renderItem={({ item }) => <HistoryCard navigation={navigation} />}
+      renderItem={({ item }) => <HistoryCard navigation={navigation} order={item} />}
     />
   </View>
 }
 
-const HistoryCard = ({ navigation }) => {
+const HistoryCard = ({ navigation, order }) => {
   return <View
     padding-10
     borderRadius={8}
     backgroundColor={Colors.white}>
     <Image
       source={{
-        uri: 'https://raw.githubusercontent.com/FaiezWaseem/food-recipe/master/src/assets/images/recipes/spagetti.png',
+        uri: order?.items?.[0]?.imageUri,
       }}
       style={{
         width: '100%',
@@ -39,21 +43,21 @@ const HistoryCard = ({ navigation }) => {
     />
     <View row>
       <Text style={{ fontFamily: 'Poppin-Medium' }}>Order# </Text>
-      <Text style={{ fontFamily: 'Poppin-Regular' }}>x11-4k6kl</Text>
+      <Text style={{ fontFamily: 'Poppin-Regular' }}>{order.orderId}</Text>
     </View>
     <View row style={{ justifyContent: 'space-between' }}>
       <View row>
         <Text style={{ fontFamily: 'Poppin-Medium' }}>Order Date: </Text>
-        <Text style={{ fontFamily: 'Poppin-Regular' }}>21/9/23</Text>
+        <Text style={{ fontFamily: 'Poppin-Regular' }}>{order.orderDate}</Text>
       </View>
       <View row>
         <Text style={{ fontFamily: 'Poppin-Medium' }}>Bill : </Text>
-        <Text style={{ fontFamily: 'Poppin-Regular' }}>100$</Text>
+        <Text style={{ fontFamily: 'Poppin-Regular' }}>{order.total}$</Text>
       </View>
     </View>
     <View row>
       <Text style={{ fontFamily: 'Poppin-Medium' }}>Order Status: </Text>
-      <Text style={{ fontFamily: 'Poppin-Regular' }}>Approve</Text>
+      <Text style={{ fontFamily: 'Poppin-Regular' }}>{order.status}</Text>
     </View>
     <View row>
       <Text style={{ fontFamily: 'Poppin-Medium' }}>Caterar : </Text>
@@ -62,14 +66,14 @@ const HistoryCard = ({ navigation }) => {
     <View row>
       <Text style={{ fontFamily: 'Poppin-Medium' }}>Address : </Text>
       <Text style={{ fontFamily: 'Poppin-Regular' }}>
-        101 arch Street Boston , USA
+        {order?.address?.address}
       </Text>
     </View>
     <View row>
       <Text style={{ fontFamily: 'Poppin-Medium' }}>
         Delivery Date :{' '}
       </Text>
-      <Text style={{ fontFamily: 'Poppin-Regular' }}>23/9/23</Text>
+      <Text style={{ fontFamily: 'Poppin-Regular' }}>{order.dateTime}</Text>
     </View>
     <View row>
       <Text style={{ fontFamily: 'Poppin-Medium' }}>Delivery : </Text>
@@ -77,12 +81,14 @@ const HistoryCard = ({ navigation }) => {
     </View>
     <View row>
       <Text style={{ fontFamily: 'Poppin-Medium' }}>Total Amount : </Text>
-      <Text style={{ fontFamily: 'Poppin-Regular' }}>120$</Text>
+      <Text style={{ fontFamily: 'Poppin-Regular' }}>{order.total}$</Text>
     </View>
     <View row spread >
       <Button label='reorder' bg-orange ></Button>
       <Button label='Give feedback' bg-orange onPress={() => {
-        navigation.push(Screen.REVIEW)
+        navigation.push(Screen.REVIEW , {
+          order
+        })
       }} ></Button>
     </View>
   </View>

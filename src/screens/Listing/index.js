@@ -11,16 +11,29 @@ import { EvilIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
 import Screen from '../../utils/Screens';
 
 import { width } from '../../utils/DptpPixel';
 
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
+    console.log(route.params)
+    const [Restaurants, setRestaurants] = React.useState(route.params.Caterars)
+    const [temp, setTemp] = React.useState(route.params.Caterars)
+    const [search, setSearch] = React.useState('')
 
-
+    React.useEffect(()=>{
+      if(search.length > 2){
+        setRestaurants(Restaurants.filter( item =>  {
+            if(item?.username.toLowerCase().includes(search.toLocaleLowerCase())){
+                return item
+            }
+        }))
+        // console.log(Restaurants.filter( item => item?.username.toLowerCase().includes(search.toLocaleLowerCase())))
+      }else{
+        setRestaurants(temp)
+      }
+    },[search])
     return <View flex marginT-30 >
         <View
             marginT-20
@@ -37,6 +50,8 @@ export default ({ navigation }) => {
             <EvilIcons name="search" size={24} color="black" />
             <TextField
                 placeholder='Search Caterar near you'
+                value={search}
+                onChangeText={setSearch}
                 style={{
                     fontWeight: '600',
                     color: 'grey',
@@ -46,25 +61,27 @@ export default ({ navigation }) => {
             <Text textBlack>Nc,USA</Text>
         </View>
         <ScrollView showsVerticalScrollIndicator={false} >
-            {Array(10).fill(1, 0, 10).map(i => <CaterarCard navigation={navigation} />)}
+            {Restaurants.map(i => <CaterarCard navigation={navigation} caterar={i} />)}
         </ScrollView>
 
     </View>
 }
 
-const CaterarCard = ({ navigation }) => {
+const CaterarCard = ({ navigation, caterar }) => {
     return (
         <Card
             style={{ marginBottom: 10, marginRight: 10, marginLeft: 10 }}
-            onPress={() => navigation.push(Screen.CATERINGVIEW)}>
+            onPress={() => navigation.push(Screen.CATERINGVIEW ,{
+                caterar
+            })}>
             <Card.Section
                 imageSource={{
-                    uri: 'https://github.com/FaiezWaseem/food-recipe/blob/master/src/assets/images/recipes/satay.png?raw=true',
+                    uri: caterar.imageUri,
                 }}
                 imageStyle={{ width: '100%', height: 180 }}
             />
             <View padding-10>
-                <Text style={{ fontFamily: 'Poppin-Bold' }}>Big Bites</Text>
+                <Text style={{ fontFamily: 'Poppin-Bold' }}>{caterar?.username}</Text>
                 <View row marginV-5>
                     <AntDesign name="star" size={18} color={Colors.orange} />
                     <Text
@@ -80,7 +97,7 @@ const CaterarCard = ({ navigation }) => {
                         textBlack
                         text80
                         style={{ fontFamily: 'Roboto-Thin' }}>
-                        FastFoods & Sandwiches
+                        {caterar?.tag}
                     </Text>
                 </View>
                 <View row marginV-5>
@@ -90,7 +107,7 @@ const CaterarCard = ({ navigation }) => {
                         textBlack
                         text80
                         style={{ fontFamily: 'Roboto-Thin' }}>
-                        2.3km away
+                        {caterar?.address?.name}
                     </Text>
                 </View>
                 <View row marginV-5 style={{ justifyContent: 'space-between' }}>
