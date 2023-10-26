@@ -4,7 +4,6 @@ import {
     Text,
     TextField,
     Card,
-    TouchableOpacity,
     Colors,
 } from 'react-native-ui-lib';
 import { EvilIcons } from '@expo/vector-icons';
@@ -12,16 +11,16 @@ import { Entypo } from '@expo/vector-icons';
 import { ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Screen from '../../utils/Screens';
+import Cache from '../../utils/Cache';
 
 import { width } from '../../utils/DptpPixel';
 
 
 export default ({ navigation, route }) => {
-    console.log(route.params)
     const [Restaurants, setRestaurants] = React.useState(route.params.Caterars)
     const [temp, setTemp] = React.useState(route.params.Caterars)
     const [search, setSearch] = React.useState('')
-
+    const address = Cache.getSessionValue('current_user_address' , Cache.JSON) || {};
     React.useEffect(()=>{
       if(search.length > 2){
         setRestaurants(Restaurants.filter( item =>  {
@@ -29,7 +28,6 @@ export default ({ navigation, route }) => {
                 return item
             }
         }))
-        // console.log(Restaurants.filter( item => item?.username.toLowerCase().includes(search.toLocaleLowerCase())))
       }else{
         setRestaurants(temp)
       }
@@ -58,7 +56,7 @@ export default ({ navigation, route }) => {
                     width: width(60),
                 }} />
             <Entypo name="location-pin" size={24} color="black" />
-            <Text textBlack>Nc,USA</Text>
+            <Text textBlack>{address?.name?.split(',')[1].substr(0,10)}</Text>
         </View>
         <ScrollView showsVerticalScrollIndicator={false} >
             {Restaurants.map(i => <CaterarCard navigation={navigation} caterar={i} />)}

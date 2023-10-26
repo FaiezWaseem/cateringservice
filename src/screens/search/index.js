@@ -4,7 +4,6 @@ import {
   Text,
   TextField,
   Card,
-  TouchableOpacity,
   Colors,
   Button,
 } from 'react-native-ui-lib';
@@ -14,24 +13,24 @@ import { ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { width } from '../../utils/DptpPixel';
 import firebase from '../../utils/firebase';
-const MAIN_IMAGE =
-  'https://raw.githubusercontent.com/FaiezWaseem/food-recipe/master/src/assets/images/recipes/spagetti.png';
+import Cache from '../../utils/Cache';
 
 export default function ({ navigation }) {
   const [ Caterars , setCaterars ] = React.useState([])
   const [temp, setTemp] = React.useState([])
   const [search, setSearch] = React.useState('')
-
+  const address = Cache.getSessionValue('current_user_address' , Cache.JSON) || {};
+   
   React.useEffect(()=>{
     if(search.length > 2){
-      setCaterars(Restaurants.filter( item =>  {
+      setCaterars(Caterars.filter( item =>  {
           if(item?.username.toLowerCase().includes(search.toLocaleLowerCase())){
               return item
           }
       }))
       // console.log(Restaurants.filter( item => item?.username.toLowerCase().includes(search.toLocaleLowerCase())))
     }else{
-      setRestaurants(temp)
+      setCaterars(temp)
     }
   },[search])
   React.useEffect(()=>{
@@ -66,16 +65,16 @@ export default function ({ navigation }) {
           }}
         />
         <Entypo name="location-pin" size={24} color="black" />
-        <Text textBlack>Nc,USA</Text>
+        <Text textBlack>{address?.name?.split(',')?.[1]?.substr(0 , 6)+'..'}</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {Caterars.map(item => <MenuItem />)}
+        {Caterars.map(item => <MenuItem  caterar={item} />)}
       </ScrollView>
     </View>
   );
 }
 
-const MenuItem = () => {
+const MenuItem = ({ caterar }) => {
 
   return (
     <Card
@@ -89,7 +88,7 @@ const MenuItem = () => {
       onPress={() => console.log('pressed')}>
       <Card.Image
         source={{
-          uri: MAIN_IMAGE,
+          uri: caterar?.imageUri,
         }}
         style={{
           width: 100,
@@ -98,7 +97,7 @@ const MenuItem = () => {
       />
       <View w="100%" padding-5>
         <Text textBlack text80 style={{ fontFamily: 'Roboto-Bold' }}>
-          Papa Jhon's
+          {caterar?.username}
         </Text>
         <View row marginV-5>
           <AntDesign name="star" size={18} color={'gold'} />
@@ -115,7 +114,7 @@ const MenuItem = () => {
             textBlack
             text80
             style={{ fontFamily: 'Roboto-Thin' }}>
-            working days mon- fri
+            {caterar?.address?.name}
           </Text>
         </View>
         <View row style={{ justifyContent: 'space-between' }} width={'70%'}>
@@ -123,7 +122,7 @@ const MenuItem = () => {
             textBlack
             text80
             style={{ fontFamily: 'Roboto-Thin', maxWidth: '60%' }}>
-            King of FastFoods
+            {caterar?.tag}
           </Text>
           <View row>
             <Button

@@ -44,6 +44,7 @@ export default function ({ navigation }) {
       // alert('Failed to get Co-ordinates');
     }
   };
+
   const fetchData = async () => {
     const data = await getAddress(latlng.latitude, latlng.longitude);
     console.log(data);
@@ -69,10 +70,10 @@ export default function ({ navigation }) {
   }, [latlng]);
 
   return (
-    <View  flex center bg-bg>
+    <View flex center bg-bg>
       <View width={'100%'} position={'absolute'} zIndex={2} ptop={20}>
-         <Text w="80%" bg="#fff" p={2} _dark={{
-          color : 'coolGray.700'
+        <Text w="80%" bg="#fff" p={2} _dark={{
+          color: 'coolGray.700'
         }}>
           {completeAddress && completeAddress.name}
         </Text>
@@ -112,12 +113,12 @@ export default function ({ navigation }) {
       <MapCurrent latlng={latlng} setLatLng={setLatLng} />
       <View width={'100%'} position={'absolute'} zIndex={2} pbottom={20} >
         <Button
-            label="Next"
-            textWhite
-            bg-orange
-            borderRadius={2}
-            marginV-10
-          />
+          label="Next"
+          textWhite
+          bg-orange
+          borderRadius={2}
+          marginV-10
+        />
       </View>
     </View>
   );

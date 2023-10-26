@@ -15,6 +15,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Screen from '../../utils/Screens';
 import db from '../../utils/firebase'
+import * as Location from 'expo-location';
+import getAddress from '../../utils/reverseGeocoding';
+import Cache from '../../utils/Cache';
 
 import { width } from '../../utils/DptpPixel';
 const ICON_SIZE = 38;
@@ -71,6 +74,71 @@ export default ({ navigation }) => {
     setCaterars( item => [ { ...caterar ,key  : snap.key} , ...item]);
    })
   },[])
+
+  
+  const [latlng, setLatLng] = React.useState({
+    latitude: 24.8990162,
+    longitude: 67.0308583,
+  });
+  const [completeAddress, setcompleteAddress] = React.useState(undefined);
+
+  const checkPermission = async () => {
+    const hasPermission = await Location.requestForegroundPermissionsAsync();
+    if (hasPermission.status === 'granted') {
+      const permission = await askPermission();
+      return permission;
+    }
+    return true;
+  };
+
+  const askPermission = async () => {
+    const permission = await Location.requestForegroundPermissionsAsync();
+    return permission.status === 'granted';
+  };
+
+  const getLocation = async () => {
+    try {
+      const { granted } = await Location.requestForegroundPermissionsAsync();
+      if (!granted) return;
+      const response = await Location.getCurrentPositionAsync();
+      const {
+        coords: { latitude, longitude },
+      } = response;
+      console.log(coords);
+      setLatLng({ latitude: latitude, longitude: longitude });
+    } catch (err) {
+      // alert('Failed to get Co-ordinates');
+    }
+  };
+  
+  const fetchData = async () => {
+    const data = await getAddress(latlng.latitude, latlng.longitude);
+    console.log(JSON.stringify(data));
+    if (data.status) {
+      console.log(data.status);
+      console.log(data.results[1]);
+      setcompleteAddress({
+        latitude: data.results[1].geometry.location.lat,
+        longitude: data.results[1].geometry.location.lng,
+        address: data.results[1].formatted_address,
+        name: data.results[1].formatted_address,
+      });
+      Cache.setSessionValue('current_user_address' , {
+        latitude: data.results[1].geometry.location.lat,
+        longitude: data.results[1].geometry.location.lng,
+        address: data.results[1].formatted_address,
+        name: data.results[1].formatted_address,
+      } , Cache.JSON)
+    }
+  };
+
+  React.useEffect(()=>{
+    askPermission()
+    getLocation()
+  },[])
+  React.useEffect(()=>{
+      fetchData()
+  },[latlng])
   return (
     <View flex marginT-30 bg-textWhite>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -105,13 +173,13 @@ export default ({ navigation }) => {
               style={{
                 fontWeight: '600',
                 color: 'grey',
-                width: width(60),
+                width: width(40),
               }}>
               {' '}
               Search around you
             </Text>
             <Entypo name="location-pin" size={24} color="black" />
-            <Text textBlack>Nc,USA</Text>
+            <Text textBlack>{completeAddress?.name.split(',')[1].substr(0 , 15)}</Text>
           </View>
         </TouchableOpacity>
         <View>

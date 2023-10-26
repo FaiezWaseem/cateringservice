@@ -17,12 +17,7 @@ import firebase from '../../utils/firebase';
 export default ({ navigation }) => {
   const [isDialogVisible, setDialogVisible] = React.useState(false);
   const [caterar , setCaterar] = React.useState({});
-  const [markers, setCaterars] = React.useState([{
-    latitude: 37.78825,
-    longitude: -122.4324,
-    title: 'Cafe 1',
-    description: 'Cafe 1 description',
-  }])
+  const [markers, setCaterars] = React.useState([])
   React.useEffect(() => {
     firebase.on('user/caterar/', (snap) => {
       const caterar = snap.val();
@@ -42,14 +37,14 @@ export default ({ navigation }) => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: caterar?.[0]?.latitude ?? 37.78825,
+          longitude: caterar?.[0]?.longitude ?? -122.4324,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
         region={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: caterar?.[0]?.latitude ?? 37.78825,
+          longitude: caterar?.[0]?.longitude ?? -122.4324,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
