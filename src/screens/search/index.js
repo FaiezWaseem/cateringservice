@@ -14,6 +14,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { width } from '../../utils/DptpPixel';
 import firebase from '../../utils/firebase';
 import Cache from '../../utils/Cache';
+import Screen from '../../utils/Screens'
 
 export default function ({ navigation }) {
   const [ Caterars , setCaterars ] = React.useState([])
@@ -68,13 +69,13 @@ export default function ({ navigation }) {
         <Text textBlack>{address?.name?.split(',')?.[1]?.substr(0 , 6)+'..'}</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {Caterars.map(item => <MenuItem  caterar={item} />)}
+        {Caterars.map(item => <MenuItem  caterar={item} navigation={navigation} />)}
       </ScrollView>
     </View>
   );
 }
 
-const MenuItem = ({ caterar }) => {
+const MenuItem = ({ caterar , navigation }) => {
 
   return (
     <Card
@@ -85,7 +86,9 @@ const MenuItem = ({ caterar }) => {
       elevation={4}
       row
       centerV
-      onPress={() => console.log('pressed')}>
+      onPress={() => navigation.push(Screen.CATERINGVIEW , { 
+        caterar
+      })}>
       <Card.Image
         source={{
           uri: caterar?.imageUri,

@@ -90,6 +90,7 @@ export default ({ navigation }) => {
         marginT-20
         width={'100%'}
         onPress={() => {}}
+        
       />
       <Toast
         visible={error.isError}

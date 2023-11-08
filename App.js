@@ -22,6 +22,7 @@ import CaterarRegister from './src/screens/Caterar/Auth/Register'
 import CaterarHome from './src/screens/Caterar/Home/'
 import CaterarCreateMenu from './src/screens/Caterar/AddMenu'
 import CaterarAddress from './src/screens/Caterar/Auth/Address'
+import CaterarViewOrder from './src/screens/Caterar/ViewOrder'
 // screen keys
 import Screen from './src/utils/Screens';
 
@@ -108,8 +109,7 @@ const App = () => {
   }
   if(error){
     alert(error)
-  }
-  console.log(fontsLoaded) 
+  } 
   return (
     <SafeAreaView style={{ flex : 1}}>
       <KeyboardAvoidingView style={{ flex : 1}}>
@@ -136,6 +136,7 @@ const App = () => {
             <Stack.Screen name={Screen.CATERAR_HOME} component={CaterarHome} />
             <Stack.Screen name={Screen.CATERAR_CREATE_MENU} component={CaterarCreateMenu} />
             <Stack.Screen name={Screen.CATERAR_ADDRESS} component={CaterarAddress} />
+            <Stack.Screen name={Screen.CATERAR_VIEW_ORDER} component={CaterarViewOrder} />
           </Stack.Navigator>
         </NavigationContainer>
       </KeyboardAvoidingView>

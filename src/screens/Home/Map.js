@@ -37,14 +37,14 @@ export default ({ navigation }) => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: caterar?.[0]?.latitude ?? 37.78825,
-          longitude: caterar?.[0]?.longitude ?? -122.4324,
+          latitude: caterar?.[0]?.latitude ?? 29.749907,
+          longitude: caterar?.[0]?.longitude ?? -95.358421,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
         region={{
-          latitude: caterar?.[0]?.latitude ?? 37.78825,
-          longitude: caterar?.[0]?.longitude ?? -122.4324,
+          latitude: caterar?.[0]?.latitude ?? 29.749907,
+          longitude: caterar?.[0]?.longitude ?? -95.358421,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>

@@ -328,3 +328,7 @@ const CategoryCard = ({ data }) => {
     </View>
   );
 };
+
+
+
+

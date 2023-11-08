@@ -13,16 +13,33 @@ import db from '../../../utils/firebase'
 export default ({ navigation }) => {
     const [menu, setMenu] = React.useState([])
     React.useEffect(() => {
+        if (!menu) {
+            load()
+        }
+    }, [])
+
+    const load = () => {
         const uid = db.getUid();
         db.on(`menu/${uid}`, (snap) => {
-            console.log(snap.val())
             setMenu(item => [snap.val(), ...item])
         })
-    }, [])
+    }
     return <View flex bg-textWhite marginT-30  >
         <ScrollView>
             {menu.map(i => <MenuItem item={i} />)}
         </ScrollView>
+        <View row center marginB-10 >
+        <Button
+            label={'Refresh'}
+            textWhite
+            size={Button.sizes.large}
+            backgroundColor={Colors.orange}
+            onPress={() => {
+                setMenu([])
+                load()
+            }}
+            />
+            </View>
         <View position={'absolute'}
             pbottom={10} pright={20}
             padding-10  >
@@ -40,7 +57,6 @@ export default ({ navigation }) => {
 const MenuItem = ({ item }) => {
     return (
         <Card
-            pointerEvents="none"
             backgroundColor={Colors.white}
             margin-5
             padding-10
@@ -77,12 +93,19 @@ const MenuItem = ({ item }) => {
                         min Order {item.price}$
                     </Text>
 
-                    <View row>
+                    <View row >
                         <Button
-                            label={'Edit'}
+                            label={'remove'}
                             textWhite
                             size={Button.sizes.medium}
                             backgroundColor={Colors.orange}
+                            onPress={() => {
+                                // alert('clicked')
+                                const uid = db.getUid();
+                                console.log(item.key)
+                                db.dlt(`menu/${uid}`, item.key)
+                                alert('Deleted Please Refresh to See Affect')
+                            }}
                         />
                     </View>
                 </View>

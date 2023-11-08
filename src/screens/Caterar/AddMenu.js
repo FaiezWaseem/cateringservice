@@ -6,8 +6,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import ImageUploadWithProgress from '../../utils/imageUploader'
 import db from '../../utils/firebase'
-
-export default ({navigation}) => {
+export default ({ navigation }) => {
     const [uploadProgress, setUploadProgress] = React.useState(0)
     const [imageUri, setImageUri] = React.useState('https://raw.githubusercontent.com/FaiezWaseem/food-recipe/master/src/assets/images/recipes/spagetti.png')
     const [title, setTitle] = React.useState('')
@@ -56,14 +55,14 @@ export default ({navigation}) => {
             setTitle('')
             setMinQty('')
             navigation.pop()
-            return ;
+            return;
         }
         alert('Please Fill out all feilds')
     }
     return <View flex marginT-30 >
         <TouchableOpacity onPress={pickFile} >
             <View center padding-10 >
-                <Image source={{ uri: imageUri }} width={200} height={200} borderRadius={8} />
+                <Image source={{ uri: imageUri }} width={100} height={100} borderRadius={8} />
                 <Text orange >Select Image</Text>
                 <ProgressBar progress={uploadProgress} progressColor='orange' />
             </View>
@@ -94,9 +93,13 @@ export default ({navigation}) => {
         <View center >
             <Button
                 onPress={onCreateMenu}
-                marginT-30 label='SAVE' bg-orange style={{
+                marginT-30 
+                label='SAVE' 
+                bg-orange 
+                style={{
                     width: 200
-                }} ></Button>
+                }} 
+                />
         </View>
 
     </View>

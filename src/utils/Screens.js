@@ -17,6 +17,7 @@ class Screen {
   static CATERAR_SIGNIN = "CaterarSignInScreen"
   static CATERAR_HOME = "CaterarHomeScreen"
   static CATERAR_CREATE_MENU = "CaterarCreateScreen"
+  static CATERAR_VIEW_ORDER = "CaterarViewOrderScreen"
 }
 
 

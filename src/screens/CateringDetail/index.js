@@ -13,9 +13,18 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { height } from '../../utils/DptpPixel';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, Platform, AlertIOS} from 'react-native';
 import db from '../../utils/firebase'
 import Cache from '../../utils/Cache'
+
+
+function notifyMessage(msg) {
+  if (Platform.OS === 'android') {
+    ToastAndroid.show(msg, ToastAndroid.LONG)
+  } else {
+    AlertIOS.alert(msg);
+  }
+}
 
 export default function ({ navigation, route }) {
   const { caterar } = route.params;
@@ -25,6 +34,8 @@ export default function ({ navigation, route }) {
       setMenu(item => [snap.val(), ...item])
     })
   }, [])
+
+  
   return (
     <View flex bg-textWhite>
       <Image
@@ -151,9 +162,9 @@ const MenuItem = ({ item }) => {
                 item.qty = item.minQty
                 userCart.push(item);
                 Cache.setSessionValue('usercart', userCart, Cache.JSON);
-                ToastAndroid.show('Added To Cart', ToastAndroid.LONG);
+                notifyMessage('Added To Cart');
               } else {
-                ToastAndroid.show('Already Added To Cart', ToastAndroid.LONG);
+                notifyMessage('Already Added To Cart', ToastAndroid.LONG);
               }
             }} />
           </View>
