@@ -1,4 +1,4 @@
- import {
+import {
     View,
     Text,
     Button,
@@ -9,14 +9,14 @@
 import { width, height } from '../../utils/DptpPixel';
 import React from 'react';
 import firebase from '../../utils/firebase';
-export default ({ route , navigation }) => {
+export default ({ route, navigation }) => {
     const { user } = route.params;
     const [username, setUsername] = React.useState(user?.username)
     const [email, setEmail] = React.useState(user?.email)
     const [phoneNumber, setPhoneNumber] = React.useState(user?.phone)
-    const [address  , setAddress] = React.useState(user?.address)
-    const onUpdatePress = () =>{
-        firebase.update(`user/${firebase.getUid()}`,{
+    const [address, setAddress] = React.useState(user?.address)
+    const onUpdatePress = () => {
+        firebase.update(`user/${firebase.getUid()}`, {
             username,
             email,
             phoneNumber,
@@ -30,12 +30,9 @@ export default ({ route , navigation }) => {
         <View marginT-30 flex bg-textWhite>
             <View height={height(30)} bg-orange center>
                 <View row>
-                    <Avatar
-                        source={{
-                            uri: '',
-                        }}
-                        size={100}
-                    />
+                    <View bg-orange40 height={100} width={100} center br100   >
+                        <Text textWhite text10BL  >{user?.username?.charAt(0)}</Text>
+                    </View>
                     <View center marginL-10 >
                         <Text textWhite style={{ fontFamily: 'Poppin-Bold' }}>
                             {user.username}
@@ -43,11 +40,6 @@ export default ({ route , navigation }) => {
                         <Text textWhite style={{ fontFamily: 'Poppin-Bold' }}>
                             {user.email}
                         </Text>
-                        <Button
-                            outline
-                            outlineColor={Colors.white}
-                            label="Upload Profile"
-                        />
                     </View>
                 </View>
             </View>
@@ -71,7 +63,7 @@ export default ({ route , navigation }) => {
                 paddingH-10
                 onChangeText={setPhoneNumber}
                 value={phoneNumber}
-             />
+            />
             <TextField
                 placeholder={'Address'}
                 floatingPlaceholder

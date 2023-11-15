@@ -46,6 +46,7 @@ export default ({ route, navigation }) => {
     console.log(route.params, address, latlng)
     db.signUp(email, password, () => {
       const userid = db.getUid();
+      alert(userid)
       db.fset(`user/caterar/${userid}`, {
         username,
         email,
@@ -57,12 +58,12 @@ export default ({ route, navigation }) => {
       })
       console.log('user created')
       AsyncStorage.setItem('isCaterar', "true")
-      navigation.replace(Screen.CATERAR_HOME)
+      // navigation.replace(Screen.CATERAR_HOME)
     })
   }
   return <View flex marginT-30 >
 
-    <View  >
+    <View ptop={25} position={'absolute'} zIndex={2} width={'100%'}  >
       <SearchBar placeholder={"Delivery Address"} onSearch={(place) => {
         setLatLng({
           latitude: place.latitude,

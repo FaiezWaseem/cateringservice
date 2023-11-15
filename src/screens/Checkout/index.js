@@ -8,13 +8,13 @@ import getAddress from '../../utils/reverseGeocoding';
 import db from '../../utils/firebase'
 import Screen from '../../utils/Screens';
 import Cache from '../../utils/Cache';
-export default ( { navigation , route }) => {
-  const { total  , sub_total  ,items  } = route.params;
+export default ({ navigation, route }) => {
+  const { total, sub_total, items } = route.params;
   const [latlng, setLatLng] = useState({
     latitude: 0, longitude: 0
   })
-  const [ time , setTime ] = useState('')
-  const [ dateTime , setDatetime ] = useState('')
+  const [time, setTime] = useState('')
+  const [dateTime, setDatetime] = useState('')
 
   const [address, setAddress] = useState()
 
@@ -31,43 +31,43 @@ export default ( { navigation , route }) => {
   }, [latlng])
 
 
-  const onCheckOut = () =>{
+  const onCheckOut = () => {
     console.log(route.params)
     console.log(address)
     console.log(time)
     console.log(dateTime)
-   const orderId = db.getKey();
-   const ordererId = db.getUid();
-   const orderDate = db.convertTime(db.getTimeinMilli());
-   const caterarId = items[0].caterarId;
-   db.fset(`order/${ordererId}/${orderId}` , {
-    address,
-    time,
-    dateTime,
-    orderDate,
-    orderId,
-    ordererId,
-    caterarId,
-    items,
-    total,
-    sub_total,
-    status : 'Pending'
-   })
-   db.fset(`order/${caterarId}/${orderId}` , {
-    address,
-    time,
-    dateTime,
-    orderDate,
-    orderId,
-    ordererId,
-    caterarId,
-    items,
-    total,
-    sub_total,
-    status : 'Pending'
-   })
-   Cache.setSessionValue('usercart' , [] , Cache.JSON)
-   navigation.replace(Screen.HOME)
+    const orderId = db.getKey();
+    const ordererId = db.getUid();
+    const orderDate = db.convertTime(db.getTimeinMilli());
+    const caterarId = items[0].caterarId;
+    db.fset(`order/${ordererId}/${orderId}`, {
+      address,
+      time,
+      dateTime,
+      orderDate,
+      orderId,
+      ordererId,
+      caterarId,
+      items,
+      total,
+      sub_total,
+      status: 'Pending'
+    })
+    db.fset(`order/${caterarId}/${orderId}`, {
+      address,
+      time,
+      dateTime,
+      orderDate,
+      orderId,
+      ordererId,
+      caterarId,
+      items,
+      total,
+      sub_total,
+      status: 'Pending'
+    })
+    Cache.setSessionValue('usercart', [], Cache.JSON)
+    navigation.replace(Screen.HOME)
   }
 
 
@@ -79,14 +79,14 @@ export default ( { navigation , route }) => {
             const dt = new Date(date);
             alert(`${dt.getHours()}:${dt.getMinutes()}:${dt.getMilliseconds()} ${dt.toISOString()}`)
             setTime(`${dt.getHours()}:${dt.getMinutes()}:${dt.getMilliseconds()}`)
-            }}  title={'Select time'} placeholder={'Please Select a Delivery Time'} mode={'time'} />
+          }} title={'Select time'} placeholder={'Please Select a Delivery Time'} mode={'time'} />
           <Dash length={width(90)} thickness={0.4} />
         </View>
         <View padding-10 >
           <DateTimePicker onChange={(date) => {
             alert(date)
             setDatetime(db.convertTime(new Date(date).getTime()))
-            }} title={'Select Date'} placeholder={'Please Select a Delivery date'} mode={'date'} />
+          }} title={'Select Date'} placeholder={'Please Select a Delivery date'} mode={'date'} />
           <Dash length={width(90)} thickness={0.4} />
         </View>
         <View  >

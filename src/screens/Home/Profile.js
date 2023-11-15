@@ -26,12 +26,9 @@ export default ({ navigation }) => {
     <View marginT-30 flex bg-textWhite>
       <View height={height(30)} bg-orange center>
         <View row>
-          <Avatar
-            source={{
-              uri: user?.avatar,
-            }}
-            size={100}
-          />
+         <View bg-orange40 height={100} width={100} center br100   >
+          <Text textWhite text10BL  >{user?.username?.charAt(0)}</Text>
+         </View>
           <View center marginL-10 >
             <Text textWhite style={{ fontFamily: 'Poppin-Bold' }}>
               {user?.username}
@@ -39,11 +36,6 @@ export default ({ navigation }) => {
             <Text textWhite style={{ fontFamily: 'Poppin-Bold' }}>
               {user?.email}
             </Text>
-            <Button
-              outline
-              outlineColor={Colors.white}
-              label="Upload Profile"
-            />
           </View>
         </View>
       </View>
